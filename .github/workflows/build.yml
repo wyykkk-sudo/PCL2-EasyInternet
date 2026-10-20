@@ -1,0 +1,22 @@
+name: Build maintenance testing EXE
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '9.0.x'
+      - uses: microsoft/setup-msbuild@v3
+      - name: Build Release x64
+        shell: pwsh
+        run: ./scripts/Build.ps1
+      - uses: actions/upload-artifact@v7
+        with:
+          name: PCL2-EasyInternet-testing-x64
+          path: dist/*
+          if-no-files-found: error

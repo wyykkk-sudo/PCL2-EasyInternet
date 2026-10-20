@@ -1,0 +1,9 @@
+<Project>
+  <!-- 易联厅长维护版：.NET Framework 主程序引用 .NET Standard 核心所需的 facade。 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48' Or '$(TargetFrameworkVersion)' == 'v4.8'">
+    <Reference Include="netstandard">
+      <HintPath Condition="'$(FrameworkPathOverride)' != ''">$(FrameworkPathOverride)\Facades\netstandard.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+</Project>
