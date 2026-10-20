@@ -1,8 +1,8 @@
-# PCL2 - 易联厅长维护版
+# PCL－厅长的魔改版
 
 原作者：**龙腾猫跃** · [支持原作者](https://meloong.com/afd/a/LTCat) · [PCL 官方源码](https://github.com/Meloong-Git/PCL)
 
-这是易联厅长基于 PCL 公开源码独立修改的第三方维护版本，非 PCL 官方发行版本。当前仓库发布源码和 Windows x64 测试构建；**完整安装、Microsoft 登录和游戏启动尚未完成验收**。
+「PCL－厅长的魔改版」是易联厅长基于 PCL 公开源码独立修改的第三方版本，非 PCL 官方发行版本。当前仓库发布源码和 Windows x64 测试构建；**完整安装、Microsoft 登录和游戏启动尚未完成验收**。
 
 ![易联厅长 Logo](Plain%20Craft%20Launcher%202/Images/BrandLogo.png)
 
