@@ -1038,7 +1038,8 @@ Retry:
                 Throw New Exception("$登录尝试太过频繁，请等待几分钟后再试！")
             ElseIf ex.StatusCode = HttpStatusCode.Forbidden Then
                 Logger.Warn(ex, "微软登录第 4 步汇报 403")
-                Throw New Exception("$当前 IP 的登录尝试异常。" & vbCrLf & "如果你使用了 VPN 或加速器，请把它们关掉或更换节点后再试！")
+                Throw New Exception("$Minecraft 登录服务拒绝了请求（403）。" & vbCrLf &
+                    "请检查网络出口或代理，并确认该 Client ID 已获准用于 Minecraft 登录。仅凭 403 无法判断具体原因。", ex)
             ElseIf ex.StatusCode = HttpStatusCode.ServiceUnavailable Then
                 Logger.Warn(ex, "微软登录第 4 步汇报 503")
                 Throw New Exception("$Mojang 服务器出现问题，请稍后再试。" & vbCrLf & "你的网络是正常的，PCL 也是正常的，是 Mojang 出问题了……")
@@ -1048,6 +1049,10 @@ Retry:
             Else
                 Throw
             End If
+        Catch ex As Exception When ex.IsBadNetwork()
+            Logger.Warn(ex, "Minecraft 登录连接失败（第 4 步）")
+            Throw New Exception("$Microsoft 和 Xbox 登录已通过，但连接 Minecraft 登录服务时失败。" & vbCrLf &
+                "请稍后重试，或检查代理、加速器及当前网络能否连接 api.minecraftservices.com。", ex)
         End Try
 
         Dim ResultJson As JObject = Result.DeserializeJson()
