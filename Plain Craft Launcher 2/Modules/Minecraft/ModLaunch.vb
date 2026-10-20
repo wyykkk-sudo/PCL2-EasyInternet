@@ -887,9 +887,18 @@ LoginFinish:
         '初始请求
 Retry:
         McLaunchLog("开始微软登录步骤 1/6（原始登录）")
-        Dim PrepareJson As JObject = NetRequestByClientRetry("https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode", HttpMethod.Post,
-            Content:=$"client_id={OAuthClientId}&tenant=/consumers&scope=XboxLive.signin%20offline_access",
-            ContentType:="application/x-www-form-urlencoded", RequireJson:=True).DeserializeJson()
+        Dim PrepareJson As JObject
+        Try
+            PrepareJson = NetRequestByClientRetry("https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode", HttpMethod.Post,
+                Content:=$"client_id={OAuthClientId}&tenant=/consumers&scope=XboxLive.signin%20offline_access",
+                ContentType:="application/x-www-form-urlencoded", RequireJson:=True).DeserializeJson()
+        Catch ex As HttpRequestCodeException
+            If ex.Response IsNot Nothing AndAlso ex.Response.ContainsIgnoreCase("AADSTS700002") Then
+                Throw New Exception("$Microsoft 登录应用尚未启用公共客户端流（AADSTS700002）。" & vbCrLf &
+                    "请维护者在 Microsoft Entra → 应用注册 → 身份验证 → 高级设置中，将允许公共客户端流设为是并保存，然后重新登录。", ex)
+            End If
+            Throw
+        End Try
         McLaunchLog("网页登录地址：" & PrepareJson("verification_uri").ToString)
 
         '弹窗
